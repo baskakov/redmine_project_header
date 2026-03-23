@@ -3,7 +3,7 @@ Redmine::Plugin.register :redmine_project_header do
   author      'Dmitrii Baskakov dmitry@bask.ws'
   description 'Adds X-Project response header with the project name on all Redmine Issues requests'
   version     '1.0.0'
-  url         'https://github.com/yourname/redmine_project_header'
+  url         'https://github.com/baskakov/redmine_project_header'
   author_url  'https://github.com/baskakov'
 
   requires_redmine version_or_higher: '5.0'
