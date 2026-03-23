@@ -15,8 +15,7 @@ require_relative 'lib/redmine_project_header/issues_controller_patch'
 # autoloaded constants are available.  In production classes are loaded
 # eagerly, so IssuesController is guaranteed to exist at this point.
 Rails.application.config.after_initialize do
-  puts '[RedmineProjectHeader] after_initialize fired'
   IssuesController.prepend(RedmineProjectHeader::IssuesControllerPatch) unless
     IssuesController.ancestors.include?(RedmineProjectHeader::IssuesControllerPatch)
-  puts "[RedmineProjectHeader] IssuesController patched: #{IssuesController.ancestors.include?(RedmineProjectHeader::IssuesControllerPatch)}"
+  puts "[RedmineProjectHeader] Plugin redmine_project_header initialized: #{IssuesController.ancestors.include?(RedmineProjectHeader::IssuesControllerPatch)}"
 end
