@@ -5,7 +5,7 @@ module RedmineProjectHeader
   # create, edit, update, destroy, …).
   module IssuesControllerPatch
 
-    LOGGER_TAG = '[RedmineProjectHeader]'.freeze
+    LOGGER_TAG = '[RedmineProjectHeader]'.freeze unless const_defined?(:LOGGER_TAG)
 
     # Register the after_action callback when this module is prepended.
     def self.prepended(base)
