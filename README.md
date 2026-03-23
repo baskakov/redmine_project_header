@@ -16,7 +16,7 @@ The header value is the **name** of the project that scopes the request.
 
    ```bash
    cd /path/to/redmine/plugins
-   git clone https://github.com/yourname/redmine_project_header.git redmine_project_header
+   git clone git@github.com:baskakov/redmine_project_header.git redmine_project_header
    ```
 
 2. Restart Redmine (Passenger reload, `systemctl restart redmine`, etc.).
