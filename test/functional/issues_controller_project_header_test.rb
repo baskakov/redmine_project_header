@@ -3,7 +3,7 @@
 # Run from your Redmine root:
 #   bundle exec rake redmine:plugins:test NAME=redmine_project_header
 #
-require File.expand_path('../../test_helper', __FILE__)
+require File.expand_path('../../../../test/test_helper', __dir__)
 
 class IssuesControllerProjectHeaderTest < Redmine::ControllerTest
   tests IssuesController
