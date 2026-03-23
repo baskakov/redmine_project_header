@@ -4,13 +4,12 @@ module RedmineProjectHeader
   # name on every action that resolves a project (index, show, new,
   # create, edit, update, destroy, …).
   module IssuesControllerPatch
-
     LOGGER_TAG = '[RedmineProjectHeader]'.freeze unless const_defined?(:LOGGER_TAG)
 
     # Register the after_action callback when this module is prepended.
     def self.prepended(base)
       base.after_action :append_project_header
-      Rails.logger.info("#{LOGGER_TAG} IssuesController patched — X-Project header enabled")
+      Rails.logger.info("#{LOGGER_TAG} IssuesController patched — X-Project header enabled") rescue nil
     end
 
     private
@@ -24,16 +23,6 @@ module RedmineProjectHeader
         response.set_header('X-Project', @issue.project.name)
         Rails.logger.info("#{LOGGER_TAG} Set X-Project: \"#{@issue.project.name}\" via @issue " \
                           "(action: #{action_name}, path: #{request.path})")
-      elsif @issues.present?
-        projects = @issues.filter_map { |i| i.project&.name }.uniq
-        if projects.any?
-          response.set_header('X-Project', projects.join(', '))
-          Rails.logger.info("#{LOGGER_TAG} Set X-Project: \"#{projects.join(', ')}\" via @issues " \
-                            "(action: #{action_name}, path: #{request.path})")
-        else
-          Rails.logger.debug("#{LOGGER_TAG} X-Project skipped — @issues present but no project names " \
-                             "(action: #{action_name}, path: #{request.path})")
-        end
       else
         Rails.logger.debug("#{LOGGER_TAG} X-Project skipped — no project in scope " \
                            "(action: #{action_name}, path: #{request.path})")

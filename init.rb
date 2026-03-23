@@ -9,12 +9,13 @@ Redmine::Plugin.register :redmine_project_header do
   requires_redmine version_or_higher: '5.0'
 end
 
-# Patch IssuesController to inject the X-Project response header
 require_relative 'lib/redmine_project_header/issues_controller_patch'
 
-Rails.configuration.to_prepare do
-  unless IssuesController.ancestors.include?(RedmineProjectHeader::IssuesControllerPatch)
-    IssuesController.prepend(RedmineProjectHeader::IssuesControllerPatch)
-  end
+# ActiveSupport::Reloader.to_prepare runs:
+#   - once during boot in production (after all classes are available)
+#   - on every code reload in development
+# This is the standard Redmine 5.x plugin pattern for monkey-patching controllers.
+ActiveSupport::Reloader.to_prepare do
+  IssuesController.prepend(RedmineProjectHeader::IssuesControllerPatch) unless
+    IssuesController.ancestors.include?(RedmineProjectHeader::IssuesControllerPatch)
 end
-
