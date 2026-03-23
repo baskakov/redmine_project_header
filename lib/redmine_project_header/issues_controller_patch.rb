@@ -13,7 +13,14 @@ module RedmineProjectHeader
     private
 
     def append_project_header
-      response.set_header('X-Project', @project.name) if @project.present?
+      if @project.present?
+        response.set_header('X-Project', @project.name)
+      elsif @issue.present? && @issue.project.present?
+        response.set_header('X-Project', @issue.project.name)
+      elsif @issues.present?
+        projects = @issues.filter_map { |i| i.project&.name }.uniq
+        response.set_header('X-Project', projects.join(', ')) if projects.any?
+      end
     end
   end
 end
