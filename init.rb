@@ -11,11 +11,12 @@ end
 
 require_relative 'lib/redmine_project_header/issues_controller_patch'
 
-# ActiveSupport::Reloader.to_prepare runs:
-#   - once during boot in production (after all classes are available)
-#   - on every code reload in development
-# This is the standard Redmine 5.x plugin pattern for monkey-patching controllers.
-ActiveSupport::Reloader.to_prepare do
+# Patch IssuesController after Rails has fully initialized and all
+# autoloaded constants are available.  In production classes are loaded
+# eagerly, so IssuesController is guaranteed to exist at this point.
+Rails.application.config.after_initialize do
+  puts '[RedmineProjectHeader] after_initialize fired'
   IssuesController.prepend(RedmineProjectHeader::IssuesControllerPatch) unless
     IssuesController.ancestors.include?(RedmineProjectHeader::IssuesControllerPatch)
+  puts "[RedmineProjectHeader] IssuesController patched: #{IssuesController.ancestors.include?(RedmineProjectHeader::IssuesControllerPatch)}"
 end
